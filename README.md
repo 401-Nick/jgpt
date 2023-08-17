@@ -1,9 +1,4 @@
-## This is a WIP. Right now the return object will most of the time be unusuable
-My intention is the following:
-jgpt.includes("Hello, World!", "World", 7) -- GPT Response: true
-
-Current output:
-jgpt.includes("Hello, World!", "World", 7) -- GPT Response: Sure! Here's a Python code snip...
+## This is a WIP
 
 # JGPT Documentation
 
