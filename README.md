@@ -1,3 +1,5 @@
+npm install jgpt
+
 ### JGPT Class
 
 The `JGPT` class provides a convenient interface to interact with the OpenAI API and generate custom prompts based on given objects and commands.
