@@ -1,9 +1,22 @@
-const JGPT = require('./jgpt.js');
+const readline = require('readline');
+const JGPTMem = require('./jgptMem.js');
 require('dotenv').config();
 
-const jgpt = new JGPT(process.env.OPENAI_API_KEY, process.env.OPENAI_ORG_ID);
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
 
-const randomObject = { number: Math.random() * 100, string: Math.random(), boolean: Math.random() < 0.5 };
-const command = "Show me this info as an HTML doc";
+const jgptBot = new JGPTMem(process.env.OPENAI_API_KEY, process.env.OPENAI_ORG_ID);
 
-jgpt.prompt(randomObject, command).then(result => console.log(result));
+const continueConversation = () => {
+    rl.question("You: ", (userInput) => {
+        jgptBot.talk(userInput).then(result => {
+            console.log(`Bot: ${result}`);
+            continueConversation();
+        });
+    });
+};
+
+// Start the conversation
+continueConversation();
