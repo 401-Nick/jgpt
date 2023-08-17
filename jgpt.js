@@ -4,34 +4,10 @@
  * according to their pricing model. Ensure you have read and understood OpenAI's
  * pricing details and usage limits before proceeding.
  */
-//////////////////////////////////////////////////////////////////////////////Notes////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// each of the results are really GPT-ey and drawn out. I have a feeling that defining a JSON object as a built in prompt object to return data would provide a bit more standardization rather than the following
-/*  --example.js-------------------
-    const string = "Hello, World!";
-    const searchString = "World";
-    const position = 7;    
-    console.log(jgpt.includes(string, searchString, position))
-    
-    ///OUTPUT//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    Includes result: Sure! Here's a Python code snippet that checks if the substring "World " is included at position 7 in the string "Hello, World!":
-    ```python
-    # Define the string
-    text = "Hello, World!"
-    
-    # Check if "World " is included at position 7
-    substring = "World "
-    position = 7
-    is_included = text[position:].startswith(substring)
-
-    # Print the result
-    print(is_included)
-    ```
-*/
-
 
 const { Configuration, OpenAIApi } = require('openai');
 require('dotenv').config();
-const promptHeader = "";
+const promptHeader = "output your response as follows {response: yourResponse, javascriptOutput: showJavascriptMethodOutputHere, ...}";
 
 
 const readline = require('readline');
@@ -82,7 +58,7 @@ class JGPT {
                 messages: [{ role: 'user', content: `${promptHeader} ${prompt}` }],
             });
             console.log(`${promptHeader} ${prompt}`)
-            return response.data.choices[0].message.content;
+            return JSON.parse(response.data.choices[0].message.content);
         } catch (error) {
             console.error(error);
             throw new Error(`Error converting using GPT: ${error.message}`);
@@ -136,64 +112,64 @@ async trim(string) {
 
 // Array methods
 async concat(array, ...values) {
-    return await this.prompt(`${array} Concatenate values ${values}`);
+    return await this.prompt(`Using this array: ${array} concatenate the following values ${values} as a javascript array `);
 }
 async every(array, callback) {
-    return await this.prompt(`${array} Check every element with callback ${callback}`);
+    return await this.prompt(`Using this array: ${array} Check every element with callback ${callback}`);
 }
 async filter(array, callback) {
-    return await this.prompt(`${array} Filter array with callback ${callback}`);
+    return await this.prompt(`Using this array: ${array} Filter array with callback ${callback}`);
 }
 async find(array, callback) {
-    return await this.prompt(`${array} Find element in array with callback ${callback}`);
+    return await this.prompt(`Using this array: ${array} Find element in array with callback ${callback}`);
 }
 async findIndex(array, callback) {
-    return await this.prompt(`${array} Find index in array with callback ${callback}`);
+    return await this.prompt(`Using this array: ${array} Find index in array with callback ${callback}`);
 }
 async forEach(array, callback) {
-    return await this.prompt(`${array} For each element in array, apply callback ${callback}`);
+    return await this.prompt(`Using this array: ${array} For each element in array, apply callback ${callback}`);
 }
 async indexOf(array, searchElement, fromIndex) {
-    return await this.prompt(`${array} Find index of "${searchElement}" from index ${fromIndex}`);
+    return await this.prompt(`Using this array: ${array} Find index of "${searchElement}" from index ${fromIndex}`);
 }
 async join(array, separator) {
-    return await this.prompt(`${array} Join array with separator "${separator}"`);
+    return await this.prompt(`Using this array: ${array} Join array with separator "${separator}"`);
 }
 async lastIndexOf(array, searchElement, fromIndex) {
-    return await this.prompt(`${array} Find last index of "${searchElement}" from index ${fromIndex}`);
+    return await this.prompt(`Using this array: ${array} Find last index of "${searchElement}" from index ${fromIndex}`);
 }
 async map(array, callback) {
-    return await this.prompt(`${array} Map array with callback ${callback}`);
+    return await this.prompt(`Using this array: ${array} Map array with callback ${callback}`);
 }
 async pop(array) {
-    return await this.prompt(`${array} Pop last element from array`);
+    return await this.prompt(`Using this array: ${array} Pop last element from array`);
 }
 async push(array, ...elements) {
-    return await this.prompt(`${array} Push elements ${elements} to array`);
+    return await this.prompt(`Using this array: ${array} Push elements ${elements} to array`);
 }
 async reduce(array, callback, initialValue) {
-    return await this.prompt(`${array} Reduce array with callback ${callback} and initial value ${initialValue}`);
+    return await this.prompt(`Using this array: ${array} Reduce array with callback ${callback} and initial value ${initialValue}`);
 }
 async reverse(array) {
-    return await this.prompt(`${array} Reverse array`);
+    return await this.prompt(`Using this array: ${array} Reverse array`);
 }
 async shift(array) {
-    return await this.prompt(`${array} Shift first element from array`);
+    return await this.prompt(`Using this array: ${array} Shift first element from array`);
 }
 async slice(array, beginIndex, endIndex) {
-    return await this.prompt(`${array} Slice array from ${beginIndex} to ${endIndex}`);
+    return await this.prompt(`Using this array: ${array} Slice array from ${beginIndex} to ${endIndex}`);
 }
 async some(array, callback) {
-    return await this.prompt(`${array} Check if some elements in array satisfy callback ${callback}`);
+    return await this.prompt(`Using this array: ${array} Check if some elements in array satisfy callback ${callback}`);
 }
 async sort(array, compareFunction) {
-    return await this.prompt(`${array} Sort array with compare function ${compareFunction}`);
+    return await this.prompt(`Using this array: ${array} Sort array with compare function ${compareFunction}`);
 }
 async splice(array, start, deleteCount, ...items) {
-    return await this.prompt(`${array} Splice array starting at ${start}, deleting ${deleteCount}, inserting ${items}`);
+    return await this.prompt(`Using this array: ${array} Splice array starting at ${start}, deleting ${deleteCount}, inserting ${items}`);
 }
 async unshift(array, ...elements) {
-    return await this.prompt(`${array} Unshift elements ${elements} to array`);
+    return await this.prompt(`Using this array: ${array} Unshift elements ${elements} to array`);
 }
 
 
@@ -219,7 +195,7 @@ async toPrecision(number, precision) {
 
 //Date Methods
 async getDate(date) {
-     return await this.prompt(`What would this be in JavaScript: getDate(${date})? !!ONLY SHOW THE OUTPUT as json!!`);
+    return await this.prompt(`What would this be in JavaScript: getDate(${date})? !!ONLY SHOW THE OUTPUT as json!!`);
 }
 
 async getDay(date) {

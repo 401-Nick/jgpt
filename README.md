@@ -30,6 +30,14 @@ constructor(apiKey, orgId)
 
 #### Methods
 
+##### Custom Methods
+- `command(object, command)`
+This method takes an object and a command as inputs and sends them as a part of a prompt to the GPT model. The object is serialized into a JSON string, and the command is concatenated to form the complete prompt. It then awaits the response from the model.
+
+- `talk(prompt)`
+This method takes a prompt as input and sends it to the GPT model. It is a straightforward way to engage in a conversation with the model, providing the prompt and awaiting the response.
+
+
 ##### String Methods
 
 String Methods
@@ -97,7 +105,7 @@ A helper class to manage ongoing conversations with JGPT.
 ```javascript
 const JGPT = require('jgpt');
 const jgpt = new JGPT('your-api-key', 'your-org-id');
-jgpt.includes("Hello, World!", "World", 7).then(console.log);
+jgpt.includes("Hello, World!", "World", 7).then(result => console.log(result.javascriptOutput));
 ```
 
 ## Conclusion

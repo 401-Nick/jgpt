@@ -1,7 +1,7 @@
 {
   "name": "jgpt",
-  "version": "0.0.1",
-  "description": "jgpt (Javascript GPT) is a lightweight and flexible library designed to integrate OpenAI's GPT models into JavaScript applications. It provides a simple interface for sending prompts to GPT models and retrieving their responses, all wrapped within a clean and easy-to-use class structure. Whether you want to convert data into different formats, generate creative content, or any other text-based task, jgpt allows developers to leverage the power of GPT within their JavaScript projects, making AI-driven operations more accessible and efficient.",
+  "version": "0.0.3",
+  "description": "The jgpt npm package enables developers to utilize OpenAI's GPT models within JavaScript. By providing intuitive methods for natural language processing, it simplifies common programming tasks.",
   "main": "jgpt.js",
   "scripts": {
     "test": "test"
