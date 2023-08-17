@@ -1,3 +1,10 @@
+# This is a WIP. Right now the return object will most of the time be unusuable
+My intention is the following:
+jgpt.includes("Hello, World!", "World", 7) -- GPT Response: true
+
+Current output:
+jgpt.includes("Hello, World!", "World", 7) -- GPT Response: Sure! Here's a Python code snip...
+
 # JGPT Documentation
 
 JGPT leverages OpenAI's GPT models to allow developers to use natural language processing (NLP) directly within JavaScript. It emphasizes idea over syntax, providing a more intuitive approach to programming.
