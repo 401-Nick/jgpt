@@ -19,6 +19,6 @@
   "homepage": "https://github.com/401-Nick/jgpt#readme",
   "dependencies": {
     "dotenv": "^16.3.1",
-    "openai": "^3.3.0"
+    "openai": "^4.0.0"
   }
 }

@@ -17,8 +17,9 @@ async function main() {
         const string = "Hello, World!";
         const searchString = "World";
         const position = 7;
-        const includeResult = await jgpt.includes(string, searchString, position);
-        console.log(includeResult.javascriptOutput); // Example output: Includes result: true
+        const includeResult = await jgpt.includes(string, searchString);
+        console.log(`Includes searchString: ${includeResult.javascriptOutput}`); // Example output: Includes result: true
+        
         
         const indexOfResult = await jgpt.indexOf(string, searchString, position);
         console.log(`Index of result: ${indexOfResult.javascriptOutput}`); // Example output: Index of result: 13
