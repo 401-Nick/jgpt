@@ -21,8 +21,9 @@ async function main() {
         console.log(`Includes searchString: ${includeResult.javascriptOutput}`); // Example output: Includes result: true
         
         
-        const indexOfResult = await jgpt.indexOf(string, searchString, position);
-        console.log(`Index of result: ${indexOfResult.javascriptOutput}`); // Example output: Index of result: 13
+        jgpt.indexOf(string, searchString, position).then(result=>{
+            console.log(`Index of result: ${result.javascriptOutput}`); // Example output: Index of result: 13
+        })
 
         const sliceResult = await jgpt.slice(string, 0, 5);
         console.log(`Slice result: ${sliceResult.javascriptOutput}`); // Example output: Slice result: Hello
