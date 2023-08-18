@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/401-Nick/jgpt/issues"
   },
-  "homepage": "https://github.com/401-Nick/jgpt#readme"
+  "homepage": "https://github.com/401-Nick/jgpt#readme",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "openai": "^3.3.0"
+  }
 }

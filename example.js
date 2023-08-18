@@ -35,6 +35,8 @@ async function main() {
         const filterResult = await jgpt.filter(array, filterCallback);
         console.log(`Filter result: ${filterResult.javascriptOutput}`); // Example output: Filter result: [3, 4]
         
+
+        jgpt.startConversation();
     } catch (error) {
         console.error(`An error occurred: ${error.message}`);
     }

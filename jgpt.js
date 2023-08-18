@@ -31,7 +31,7 @@ class Conversation {
                 return;
             }
             const result = await this.jgpt.talk(`, ${input}, (here is additional context: ${context})`);
-            console.log(`Bot: ${result}`);
+            console.log(`Bot: ${result.response}`);
             resolve(this.continueConversation());
         });
         });
@@ -57,7 +57,6 @@ class JGPT {
                 model: 'gpt-3.5-turbo',
                 messages: [{ role: 'user', content: `${promptHeader} ${prompt}` }],
             });
-            console.log(`${promptHeader} ${prompt}`)
             return JSON.parse(response.data.choices[0].message.content);
         } catch (error) {
             console.error(error);
