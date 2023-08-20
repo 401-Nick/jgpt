@@ -35,6 +35,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Conversation = void 0;
 /*
  * DISCLAIMER: To use JGPT, you need to have a valid API key provided by OpenAI.
  * Please note that usage of the OpenAI API is not free, and you will be charged
@@ -75,8 +76,12 @@ class Conversation {
         this.continueConversation(context);
     }
 }
+exports.Conversation = Conversation;
 class JGPT {
     constructor(apiKey) {
+        if (!apiKey) {
+            throw new Error('OPENAI_API_KEY is not defined in the environment variables');
+        }
         this.openai = new openai_1.default({
             apiKey: apiKey
         });
@@ -88,7 +93,7 @@ class JGPT {
                     model: 'gpt-3.5-turbo',
                     max_tokens: max_tokens,
                     messages: [
-                        { role: 'system', content: "You are a javascript interpreter, only respond in the following example format {response: \"Here is the output of the method output you asked for\", javascriptOutput: ['array', 'here']}" },
+                        { role: 'system', content: "You are a javascript interpreter, only respond in the following example format {textResponse: \"Here is the output of the method output you asked for\", dataReponse: ['array', 'here']}" },
                         { role: 'user', content: `${promptHeader} ${prompt}` }
                     ],
                 });
@@ -126,4 +131,5 @@ class JGPT {
         conversation.start();
     }
 }
+exports.default = JGPT;
 module.exports = JGPT;

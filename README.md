@@ -1,107 +1,18 @@
-## This is a WIP
+The `JGPT` package is a wrapper around the OpenAI API, specifically designed to facilitate and parse natural language interactions with GPT. The package is built using TypeScript and is organized into two main classes: `Conversation` and `JGPT`.
 
-# JGPT Documentation
+### `JGPT` Class:
 
-JGPT leverages OpenAI's GPT models to allow developers to use natural language processing (NLP) directly within JavaScript. It emphasizes idea over syntax, providing a more intuitive approach to programming.
+1. **Constructor**: Accepts an API key as a string. An error is thrown if the key is not provided.
+2. **`prompt` Method**: Allows querying the GPT-3.5-turbo model by accepting a prompt and optional token limit. It returns a parsed JSON response or raw content based on the data received.
+3. **`command` and `talk` Methods**: Custom tools for specific interactions with the GPT model, allowing for more structured conversation prompts.
+4. **`startConversation` Method**: Initializes a conversation using the `Conversation` class.
 
-## Installation
-Before using JGPT, you must obtain a valid API key from OpenAI and understand OpenAI's pricing details.
+### `Conversation` Class:
 
-## Classes
+1. **Constructor**: Accepts a `JGPT` instance and sets up user input and output streams.
+2. **`continueConversation` Method**: An asynchronous method that continuously prompts the user for input, passes it to the GPT model via the `JGPT` class, and prints the response. It also handles the "exit" command to terminate the conversation.
+3. **`start` Method**: Initiates the conversation loop.
 
-### `class JGPT`
+### Disclaimer:
 
-The main class that holds all the methods for interacting with natural language.
-
-#### Constructor
-
-```javascript
-constructor(apiKey, orgId)
-```
-
-##### Parameters
-- `apiKey` (String) - Your OpenAI API key.
-- `orgId` (String) - Your OpenAI organization ID.
-
-#### Methods
-
-##### Custom Methods
-- `command(object, command)`
-This method takes an object and a command as inputs and sends them as a part of a prompt to the GPT model. The object is serialized into a JSON string, and the command is concatenated to form the complete prompt. It then awaits the response from the model.
-
-- `talk(prompt)`
-This method takes a prompt as input and sends it to the GPT model. It is a straightforward way to engage in a conversation with the model, providing the prompt and awaiting the response.
-
-
-##### String Methods
-
-String Methods
-- `includes(string, searchString, position)`: Checks if a string includes another at a specific position.
-- `indexOf(string, searchValue, fromIndex)`: Finds the index of a value in a string.
-- `lastIndexOf(string, searchValue, fromIndex)`: Finds the last index of a value in a string.
-- `match(string, regexp)`: Matches a string with a regular expression.
-- `replace(string, searchValue, replaceValue)`: Replaces a value in a string with another.
-- `slice(string, beginIndex, endIndex)`: Slices a string between two indices.
-- `split(string, separator, limit)`: Splits a string by a separator with an optional limit.
-- `substr(string, start, length)`: Gets a substring starting at a specific index with a specific length.
-- `toUpperCase(string)`: Converts a string to uppercase.
-- `toLowerCase(string)`: Converts a string to lowercase.
-- `trim(string)`: Trims whitespace from a string.
-
-##### Array Methods
-- `concat(array, ...values)`: Concatenates values to an array.
-- `every(array, callback)`: Checks every element with a callback.
-- `filter(array, callback)`: Filters an array with a callback.
-- `find(array, callback)`: Finds an element in an array with a callback.
-- `findIndex(array, callback)`: Finds an index in an array with a callback.
-- `forEach(array, callback)`: Applies a callback to each element in an array.
-- `indexOf(array, searchElement, fromIndex)`: Finds the index of a value in an array.
-- `join(array, separator)`: Joins an array with a separator.
-- `lastIndexOf(array, searchElement, fromIndex)`: Finds the last index of a value in an array.
-- `map(array, callback)`: Maps an array with a callback.
-- `pop(array)`: Pops the last element from an array.
-- `push(array, ...elements)`: Pushes elements to an array.
-- `reduce(array, callback, initialValue)`: Reduces an array with a callback and initial value.
-- `reverse(array)`: Reverses an array.
-- `shift(array)`: Shifts the first element from an array.
-- `slice(array, beginIndex, endIndex)`: Slices an array between two indices.
-- `some(array, callback)`: Checks if some elements in an array satisfy a callback.
-- `sort(array, compareFunction)`: Sorts an array with a compare function.
-- `splice(array, start, deleteCount, ...items)`: Splices an array starting at an index, deleting a count, inserting items.
-- `unshift(array, ...elements)`: Unshifts elements to an array.
-
-##### Number Methods
-- `toExponential(number, fractionDigits)`: Converts to exponential form with specific fraction digits.
-- `toFixed(number, digits)`: Fixes to specific decimal places.
-- `toLocaleString(number, locales, options)`: Converts to a locale string with locales and options.
-- `toPrecision(number, precision)`: Converts to a specific precision.
-
-##### Date Methods
-- `getDate(date)`: Gets the date.
-- `getDay(date)`: Gets the day.
-- `getFullYear(date)`: Gets the full year.
-- `getHours(date)`: Gets the hours.
-- `getMilliseconds(date)`: Gets the milliseconds.
-- `getMinutes(date)`: Gets the minutes.
-- `getMonth(date)`: Gets the month.
-- `getSeconds(date)`: Gets the seconds.
-- `getTime(date)`: Gets the time.
-
-### `class Conversation`
-
-A helper class to manage ongoing conversations with JGPT.
-
-#### Methods
-- `continueConversation(context)`: Continues a conversation with JGPT.
-- `start(context)`: Starts a new conversation with JGPT.
-
-## Usage Example
-
-```javascript
-const JGPT = require('jgpt');
-const jgpt = new JGPT('your-api-key', 'your-org-id');
-jgpt.includes("Hello, World!", "World", 7).then(result => console.log(result.javascriptOutput));
-```
-
-## Conclusion
-JGPT offers a unique way to interact with JavaScript using natural language, making development more approachable and user-friendly. Whether you're a seasoned developer or just getting started, JGPT brings the power of AI-driven language models directly to your JavaScript environment.
+Usage of the package requires a valid OpenAI API key, and charges apply according to OpenAI's pricing model. Users must understand OpenAI's pricing and usage limits before utilizing this package.

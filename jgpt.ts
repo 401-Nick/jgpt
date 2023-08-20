@@ -8,12 +8,12 @@ import readline, {Interface} from 'readline';
 import OpenAI from 'openai';
 
 require('dotenv').config();
-const promptHeader = "output your response as follows {response: yourResponse, javascriptOutput: showJavascriptMethodOutputHere, ...}";
+const promptHeader = ``;
+const systemPrompt = ``;
 
 
 
-
-class Conversation {
+export class Conversation {
     jgpt: JGPT;
     userInput: Interface;
     constructor(jgpt: JGPT) {
@@ -47,9 +47,13 @@ class Conversation {
     }
 }
 
-class JGPT {
+export default class JGPT {
     openai: OpenAI;
+    
     constructor(apiKey: string, ) {
+        if (!apiKey) {
+            throw new Error('OPENAI_API_KEY is not defined in the environment variables');
+        }
         this.openai = new OpenAI({
             apiKey: apiKey
         });
@@ -61,7 +65,7 @@ class JGPT {
                 model: 'gpt-3.5-turbo',
                 max_tokens: max_tokens,
                 messages: [
-                    { role: 'system', content: "You are a javascript interpreter, only respond in the following example format {response: \"Here is the output of the method output you asked for\", javascriptOutput: ['array', 'here']}"}, 
+                    { role: 'system', content: `${systemPrompt}`}, 
                     { role: 'user', content: `${promptHeader} ${prompt}` }
                 ],
             });
