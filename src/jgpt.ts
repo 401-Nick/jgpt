@@ -4,17 +4,19 @@
  * according to their pricing model. Ensure you have read and understood OpenAI's
  * pricing details and usage limits before proceeding.
  */
-
-const  OpenAI  = require('openai');
+import readline, {Interface} from 'readline';
+import OpenAI from 'openai';
 
 require('dotenv').config();
 const promptHeader = "output your response as follows {response: yourResponse, javascriptOutput: showJavascriptMethodOutputHere, ...}";
 
 
-const readline = require('readline');
+
 
 class Conversation {
-    constructor(jgpt) {
+    jgpt: JGPT;
+    userInput: Interface;
+    constructor(jgpt: JGPT) {
         this.jgpt = jgpt;
         this.userInput = readline.createInterface({
         input: process.stdin,
@@ -22,8 +24,10 @@ class Conversation {
         });
     }
 
-    async continueConversation(context) {
-        return new Promise((resolve) => {
+    async continueConversation(context: string) {
+        userInput: Interface;
+
+        return new Promise<void>((resolve) => {
         this.userInput.question("You: ", async (input) => {
             if (input.toLowerCase() === 'exit') {
                 this.userInput.close();
@@ -33,7 +37,7 @@ class Conversation {
             }
             const result = await this.jgpt.talk(`, ${input}, (here is additional context: ${context})`);
             console.log(`Bot: ${result.response}`);
-            resolve(this.continueConversation());
+            resolve(this.continueConversation(''));
         });
         });
     }
@@ -44,31 +48,35 @@ class Conversation {
 }
 
 class JGPT {
-    constructor(apiKey) {
+    openai: OpenAI;
+    constructor(apiKey: string, ) {
         this.openai = new OpenAI({
-            apiKey: apiKey // This is also the default, can be omitted
+            apiKey: apiKey
         });
     }
 
-    async prompt(prompt, max_tokens = 500) {
+
+    //
+    async prompt(prompt: string, max_tokens = 500) {
         try {
             const response = await this.openai.chat.completions.create({
                 model: 'gpt-3.5-turbo',
                 max_tokens: max_tokens,
-                messages: [{ role: 'user', content: `${promptHeader} ${prompt}` }],
+                messages: [
+                    { role: 'system', content: "You are a javascript interpreter, only respond in the following example format {response: \"Here is the output of the method output you asked for\", javascriptOutput: ['array', 'here']}"}, 
+                    { role: 'user', content: `${promptHeader} ${prompt}` }
+                ],
             });
-            try{
-
-                return JSON.parse(response.choices[0].message.content);
-            }catch{
+            try {
+                if (response.choices[0].message.content !== null) {
+                    return JSON.parse(response.choices[0].message.content);
+                } else {
+                    // Handle the null value as needed
+                }
+            } catch {
                 return response.choices[0].message.content;
             }
-
-            
-        } catch (error) {
-            console.error(error);
-            throw new Error(`Error converting using GPT: ${error.message}`);
-        }
+        }            
     }
 
 //Custom tools
@@ -83,10 +91,10 @@ async talk(prompt){
 
 // String methods
 async includes(string, searchString, position) {
-    return await this.prompt(`set: {javascriptOutput: ('${string}'.includes('${searchString}', '${position}')}) // Example Output: true`); 
+    return await this.prompt(`set: {javascriptOutput: ('${string}'.includes('${searchString}', '${position}')})`); 
 }
 async indexOf(string, searchValue, fromIndex='') {
-    return await this.prompt(`${string} Find index of "${searchValue}" from index ${fromIndex} set {javascriptOutput: '${string}'.indexOf('${searchValue}', '${fromIndex}')} // Example Output: 5`);
+    return await this.prompt(`set {javascriptOutput: '${string}'.indexOf('${searchValue}', '${fromIndex}')}`);
 }
 async lastIndexOf(string, searchValue, fromIndex) {
     return await this.prompt(`${string} Find last index of "${searchValue}" from index ${fromIndex} set {javascriptOutput: '${string}'.lastIndexOf('${searchValue}', '${fromIndex}')} // Example Output: 9` );
@@ -105,7 +113,8 @@ async slice(string, beginIndex, endIndex) {
 }
 
 async split(string, separator, limit) {
-    return await this.prompt(`${string} Split string by "${separator}" with limit ${limit} set {javascriptOutput: '${string}'.split('${separator}', ${limit})} // Example Output: ['part1', 'part2']`);
+    console.log(`{javascriptOutput: '${string}'.split('${separator}', ${limit})}`)
+    return await this.prompt(`Return the following response {response: "split method returned!, javascriptOutput: '${string}'.split('${separator}', ${limit})}`);
 }
 
 async substr(string, start, length) {

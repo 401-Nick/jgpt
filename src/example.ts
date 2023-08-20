@@ -8,7 +8,7 @@
 
 
 
-const JGPT = require('./jgpt.js');
+const JGPT = require('./jgpt.ts');
 require('dotenv').config();
 
 async function main() {
