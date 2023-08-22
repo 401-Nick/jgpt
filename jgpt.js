@@ -1,27 +1,4 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -42,10 +19,18 @@ exports.Conversation = void 0;
  * according to their pricing model. Ensure you have read and understood OpenAI's
  * pricing details and usage limits before proceeding.
  */
-const readline_1 = __importStar(require("readline"));
+const readline_1 = __importDefault(require("readline"));
 const openai_1 = __importDefault(require("openai"));
 require('dotenv').config();
-const promptHeader = "output your response as follows {response: yourResponse, javascriptOutput: showJavascriptMethodOutputHere, ...}";
+const promptHeader = ``;
+const systemPrompt = `Your job is to respond in JSON the following way. Do not add \\n\n:
+{
+    "messageToUser": your response here, //This is the place for conversation.
+    "returnData":  {...}, //This is the place for data.
+    "returnCommand": "", //This command will be executed in a sandboxed environment and the result will be returned to the user, you have atonomy to do whatever you want with this command, you're in javascript
+}`;
+console.log(systemPrompt);
+//Above the return command will not do any execution, just an experiment
 class Conversation {
     constructor(jgpt) {
         this.jgpt = jgpt;
@@ -56,7 +41,6 @@ class Conversation {
     }
     continueConversation(context) {
         return __awaiter(this, void 0, void 0, function* () {
-            userInput: readline_1.Interface;
             return new Promise((resolve) => {
                 this.userInput.question("You: ", (input) => __awaiter(this, void 0, void 0, function* () {
                     if (input.toLowerCase() === 'exit') {
@@ -93,7 +77,7 @@ class JGPT {
                     model: 'gpt-3.5-turbo',
                     max_tokens: max_tokens,
                     messages: [
-                        { role: 'system', content: "You are a javascript interpreter, only respond in the following example format {textResponse: \"Here is the output of the method output you asked for\", dataReponse: ['array', 'here']}" },
+                        { role: 'system', content: `${systemPrompt}` },
                         { role: 'user', content: `${promptHeader} ${prompt}` }
                     ],
                 });
@@ -106,6 +90,7 @@ class JGPT {
                     }
                 }
                 catch (_a) {
+                    console.log("failed to parse as JSON");
                     return response.choices[0].message.content;
                 }
             }
@@ -115,9 +100,9 @@ class JGPT {
         });
     }
     //Custom tools
-    command(object, command) {
+    command(command, context) {
         return __awaiter(this, void 0, void 0, function* () {
-            const prompt = `Context: Here is my data: ${JSON.stringify(object)}: Command: ${command}`;
+            const prompt = `Command: ${command} Context: ${JSON.stringify(context)}: `;
             return yield this.prompt(prompt);
         });
     }

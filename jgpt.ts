@@ -9,10 +9,15 @@ import OpenAI from 'openai';
 
 require('dotenv').config();
 const promptHeader = ``;
-const systemPrompt = ``;
+const systemPrompt = `Your job is to respond in JSON the following way. Do not add \\n\n:
+{
+    "messageToUser": your response here, //This is the place for conversation.
+    "returnData":  {...}, //This is the place for data.
+    "returnCommand": "", //This command will be executed in a sandboxed environment and the result will be returned to the user, you have atonomy to do whatever you want with this command, you're in javascript
+}`
+console.log(systemPrompt);
 
-
-
+//Above the return command will not do any execution, just an experiment
 export class Conversation {
     jgpt: JGPT;
     userInput: Interface;
@@ -25,8 +30,6 @@ export class Conversation {
     }
 
     async continueConversation(context: string) {
-        userInput: Interface;
-
         return new Promise<void>((resolve) => {
         this.userInput.question("You: ", async (input) => {
             if (input.toLowerCase() === 'exit') {
@@ -76,6 +79,7 @@ export default class JGPT {
                     // Handle the null value as needed
                 }
             } catch {
+                console.log("failed to parse as JSON");
                 return response.choices[0].message.content;
             }
         } catch (err) {
@@ -84,8 +88,8 @@ export default class JGPT {
     }
 
 //Custom tools
-async command(object: string, command:string) {
-    const prompt = `Context: Here is my data: ${JSON.stringify(object)}: Command: ${command}`;
+async command(command:string, context: string) {
+    const prompt = `Command: ${command} Context: ${JSON.stringify(context)}: `;
     return await this.prompt(prompt);
 }
 async talk(prompt: string){

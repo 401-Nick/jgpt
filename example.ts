@@ -8,7 +8,7 @@ if (!apiKey) {
 
 const jgpt = new JGPT(apiKey);
 
-const testObj = `const person = {
+const context = JSON.stringify({
     name: "John",
     age: 30,
     city: "New York",
@@ -17,6 +17,17 @@ const testObj = `const person = {
         css: "Moderate",
         js: "Moderate"
     }
-};`
+});
 
-jgpt.command(testObj, "convert this to russian").then((response) => {console.log(response)});
+async function executeCommands() {
+    try {
+        const jgptObjArrayRequest = await jgpt.command("return 3 items with different values in the following format: ", context);
+        const response = await jgpt.command("convert this into plain CSV format", JSON.parse(jgptObjArrayRequest.returnData));
+        console.log('bot response');
+        console.log(response);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+executeCommands();
