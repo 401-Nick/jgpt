@@ -7,16 +7,15 @@
 import readline, { Interface } from 'readline';
 import OpenAI from 'openai';
 
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
 const promptHeader = ``;
 const systemPrompt = `You are a travel assistant. `
 console.log(systemPrompt);
 
 //Above the return command will not do any execution, just an experiment
-export class Conversation {
-    jgpt: JGPT;
-    userInput: Interface;
-    constructor(jgpt: JGPT) {
+class Conversation {
+    constructor(jgpt) {
         this.jgpt = jgpt;
         this.userInput = readline.createInterface({
             input: process.stdin,
@@ -24,8 +23,8 @@ export class Conversation {
         });
     }
 
-    async continueConversation(context: string) {
-        return new Promise<void>((resolve) => {
+    async continueConversation(context) {
+        return new Promise((resolve) => {
             this.userInput.question("You: ", async (input) => {
                 if (input.toLowerCase() === 'exit') {
                     this.userInput.close();
@@ -45,10 +44,9 @@ export class Conversation {
     }
 }
 
-export default class JGPT {
-    openai: OpenAI;
+class JGPT {
 
-    constructor(apiKey: string,) {
+    constructor(apiKey) {
         if (!apiKey) {
             throw new Error('OPENAI_API_KEY is not defined in the environment variables');
         }
@@ -57,7 +55,7 @@ export default class JGPT {
         });
     }
 
-    async prompt(prompt: string, max_tokens = 500) {
+    async prompt(prompt, max_tokens = 500) {
         try {
             const response = await this.openai.chat.completions.create({
                 model: 'gpt-3.5-turbo',
@@ -83,11 +81,11 @@ export default class JGPT {
     }
 
     //Custom tools
-    async command(command: string, context: string) {
+    async command(command, context) {
         const prompt = `Command: ${command} Context: ${JSON.stringify(context)}: `;
         return await this.prompt(prompt);
     }
-    async talk(prompt: string) {
+    async talk(prompt) {
         return await this.prompt(prompt);
     }
     startConversation() {
@@ -95,4 +93,4 @@ export default class JGPT {
         conversation.start();
     }
 }
-module.exports = JGPT;
+export default JGPT;

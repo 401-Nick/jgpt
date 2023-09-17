@@ -1,5 +1,6 @@
 import JGPT from './jgpt.js';
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
 const apiKey = process.env.OPENAI_API_KEY;
 
 if (!apiKey) {
