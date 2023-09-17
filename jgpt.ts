@@ -4,17 +4,12 @@
  * according to their pricing model. Ensure you have read and understood OpenAI's
  * pricing details and usage limits before proceeding.
  */
-import readline, {Interface} from 'readline';
+import readline, { Interface } from 'readline';
 import OpenAI from 'openai';
 
 require('dotenv').config();
 const promptHeader = ``;
-const systemPrompt = `Your job is to respond in JSON the following way. Do not add \\n\n:
-{
-    "messageToUser": your response here, //This is the place for conversation.
-    "returnData":  {...}, //This is the place for data.
-    "returnCommand": "", //This command will be executed in a sandboxed environment and the result will be returned to the user, you have atonomy to do whatever you want with this command, you're in javascript
-}`
+const systemPrompt = `You are a travel assistant. `
 console.log(systemPrompt);
 
 //Above the return command will not do any execution, just an experiment
@@ -24,24 +19,24 @@ export class Conversation {
     constructor(jgpt: JGPT) {
         this.jgpt = jgpt;
         this.userInput = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
+            input: process.stdin,
+            output: process.stdout,
         });
     }
 
     async continueConversation(context: string) {
         return new Promise<void>((resolve) => {
-        this.userInput.question("You: ", async (input) => {
-            if (input.toLowerCase() === 'exit') {
-                this.userInput.close();
-                console.log('Exiting conversation.');
-                resolve();
-                return;
-            }
-            const result = await this.jgpt.talk(`, ${input}, (here is additional context: ${context})`);
-            console.log(`Bot: ${result.response}`);
-            resolve(this.continueConversation(''));
-        });
+            this.userInput.question("You: ", async (input) => {
+                if (input.toLowerCase() === 'exit') {
+                    this.userInput.close();
+                    console.log('Exiting conversation.');
+                    resolve();
+                    return;
+                }
+                const result = await this.jgpt.talk(`, ${input}, (here is additional context: ${context})`);
+                console.log(`Bot: ${result.response}`);
+                resolve(this.continueConversation(''));
+            });
         });
     }
 
@@ -52,8 +47,8 @@ export class Conversation {
 
 export default class JGPT {
     openai: OpenAI;
-    
-    constructor(apiKey: string, ) {
+
+    constructor(apiKey: string,) {
         if (!apiKey) {
             throw new Error('OPENAI_API_KEY is not defined in the environment variables');
         }
@@ -68,7 +63,7 @@ export default class JGPT {
                 model: 'gpt-3.5-turbo',
                 max_tokens: max_tokens,
                 messages: [
-                    { role: 'system', content: `${systemPrompt}`}, 
+                    { role: 'system', content: `${systemPrompt}` },
                     { role: 'user', content: `${promptHeader} ${prompt}` }
                 ],
             });
@@ -87,14 +82,14 @@ export default class JGPT {
         }
     }
 
-//Custom tools
-async command(command:string, context: string) {
-    const prompt = `Command: ${command} Context: ${JSON.stringify(context)}: `;
-    return await this.prompt(prompt);
-}
-async talk(prompt: string){
-    return await this.prompt(prompt);
-}
+    //Custom tools
+    async command(command: string, context: string) {
+        const prompt = `Command: ${command} Context: ${JSON.stringify(context)}: `;
+        return await this.prompt(prompt);
+    }
+    async talk(prompt: string) {
+        return await this.prompt(prompt);
+    }
     startConversation() {
         const conversation = new Conversation(this);
         conversation.start();
