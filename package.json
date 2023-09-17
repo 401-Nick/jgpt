@@ -2,9 +2,11 @@
   "name": "jgpt",
   "version": "0.0.3",
   "description": "The jgpt npm package enables developers to utilize OpenAI's GPT models within JavaScript. By providing intuitive methods for natural language processing, it simplifies common programming tasks.",
+  "type": "module",
   "main": "jgpt.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "dev": "node example.js"
   },
   "repository": {
     "type": "git",
@@ -19,7 +21,6 @@
   "homepage": "https://github.com/401-Nick/jgpt#readme",
   "dependencies": {
     "dotenv": "^16.3.1",
-    "jest": "^29.6.2",
     "openai": "^4.0.0"
   },
   "jest": {
