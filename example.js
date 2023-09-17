@@ -22,8 +22,7 @@ const context = JSON.stringify({
 
 async function executeCommands() {
     try {
-        const jgptObjArrayRequest = await jgpt.command("return 3 items with different values in the following format: ", context);
-        const response = await jgpt.command("convert this into plain CSV format", JSON.parse(jgptObjArrayRequest.returnData));
+        const response = await jgpt.command("return 3 items with different values in the following format: ", context);
         console.log('bot response');
         console.log(response);
     } catch (error) {

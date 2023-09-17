@@ -67,7 +67,7 @@ class JGPT {
             });
             try {
                 if (response.choices[0].message.content !== null) {
-                    return JSON.parse(response.choices[0].message.content);
+                    return response.choices[0].message.content;
                 } else {
                     // Handle the null value as needed
                 }
